@@ -5,28 +5,28 @@ $bmw = [
     "doors" => 5,
     "year" => "2015",
 ];
-$toyota  = [
+$toyota = [
     "model" => "SG",
     "speed" => 300,
     "doors" => 3,
     "year" => "2007",
 ];
-$opel  = [
+$opel = [
     "model" => "Astra",
     "speed" => 100,
     "doors" => 5,
     "year" => "2018",
 ];
-$array= [
+$array = [
     "bmw" => $bmw,
     "toyota" => $toyota,
     "opel" => $opel
-    ];
+];
 $nameofmark = array_keys($array);
-for($i=0;$i<3;$i++){
-    echo "Car "."$nameofmark[$i]"."<br>";
-    foreach ($array[$nameofmark[$i]] as $key => $value){
-        echo $value ." ";
+for ($i = 0; $i < 3; $i++) {
+    echo "Car " . "$nameofmark[$i]" . "<br>";
+    foreach ($array[$nameofmark[$i]] as $key => $value) {
+        echo $value . " ";
     }
     echo "<br>";
 }

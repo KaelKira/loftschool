@@ -1,14 +1,14 @@
 <?php
 $age = 0;
-if($age >= 18 ){
-    if($age <= 65){
+if ($age >= 18) {
+    if ($age <= 65) {
         echo "Вам еще работать и работать";
-    }else{
+    } else {
         echo "Вам пора на пенсию";
     }
 
-}elseif($age >= 1){
+} elseif ($age >= 1) {
     echo "Вам ещё рано работать";
-}else{
+} else {
     echo "Неизвестный возраст";
 }
