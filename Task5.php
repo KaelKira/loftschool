@@ -17,17 +17,16 @@ $opel = [
     "doors" => 5,
     "year" => "2018",
 ];
-$array = [
+$cars = [
     "bmw" => $bmw,
     "toyota" => $toyota,
     "opel" => $opel
 ];
-$nameofmark = array_keys($array);
-for ($i = 0; $i < 3; $i++) {
-    echo "Car " . "$nameofmark[$i]" . "<br>";
-    foreach ($array[$nameofmark[$i]] as $key => $value) {
-        echo $value . " ";
-    }
-    echo "<br>";
+foreach ($cars as $brand => $car) {
+    echo $brand . "\n";
+    echo $car['model'] . ' ';
+    echo $car['speed'] . ' ';
+    echo $car['doors'] . ' ';
+    echo $car['year'] . "\n";
 }
 
