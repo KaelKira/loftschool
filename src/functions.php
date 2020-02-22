@@ -56,7 +56,7 @@ function task2(string $operator)
     return $result;
 }
 
-function task3(int $int, int $int2)
+function task3($int, $int2)
 {
     if (is_int($int) && is_int($int2)) {
         echo '<table border="1">';
@@ -100,5 +100,3 @@ function task6()
     file_put_contents('test.txt', 'Hello again!');
     echo file_get_contents('test.txt');
 }
-
-task3(1,2);
