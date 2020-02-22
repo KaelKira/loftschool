@@ -95,8 +95,8 @@ function task5()
     echo $changed2;
 }
 
-function task6()
+function task6($fileName)
 {
-    file_put_contents('test.txt', 'Hello again!');
-    echo file_get_contents('test.txt');
+    file_put_contents($fileName, 'Hello again!');
+    echo file_get_contents($fileName);
 }
