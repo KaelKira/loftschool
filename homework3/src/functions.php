@@ -76,3 +76,19 @@ function task2()
         echo 'Файл не меняли';
     }
 }
+function task3(){
+    for ($i = 0; $i < 51; $i++) {
+        $arr[$i] = rand(0, 100);
+    }
+    $newFile = fopen('src/file.csv','w');
+    fputcsv($newFile,$arr,';');
+    $newFile = fopen('src/file.csv', 'r');
+    $newArr = $string = fgetcsv($newFile, 1000*1000,';');
+    $sum = 0;
+    foreach ($newArr as $value){
+        if($value % 2 == 0){
+            $sum +=$value;
+        }
+    }
+    echo 'Сумма чётных чисел равна = '.$sum;
+}
