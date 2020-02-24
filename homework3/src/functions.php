@@ -3,28 +3,76 @@ function task1()
 {
     $file = file_get_contents('src/data.xml');
     $xml = new SimpleXMLElement($file);
-    echo '<b>PurchaseOrderNumber: </b>'. $xml->attributes()->PurchaseOrderNumber . '<br>';
-    echo '<b>OrderDate: </b>'. $xml->attributes()->OrderDate;
-    echo '<p>'."Адреса:" . '</p>';
-    foreach ($xml->Address as $adres){
+    echo '<b>PurchaseOrderNumber: </b>' . $xml->attributes()->PurchaseOrderNumber . '<br>';
+    echo '<b>OrderDate: </b>' . $xml->attributes()->OrderDate;
+    echo '<p>' . "Адреса:" . '</p>';
+    foreach ($xml->Address as $adres) {
         echo '<p>';
-        echo '<b>Type</b>: '. $adres->attributes()->Type . '<br>';
-        echo 'Улица: '. $adres->Street->__toString() . '<br>';
-        echo 'Город: '. $adres->City->__toString() . '<br>';
-        echo 'Штат: '. $adres->State->__toString() . '<br>';
-        echo 'Индекс: '. $adres->Zip->__toString() . '<br>';
-        echo 'Страна: '. $adres->Country->__toString() . '<br>';
+        echo '<b>Type</b>: ' . $adres->attributes()->Type . '<br>';
+        echo 'Улица: ' . $adres->Street->__toString() . '<br>';
+        echo 'Город: ' . $adres->City->__toString() . '<br>';
+        echo 'Штат: ' . $adres->State->__toString() . '<br>';
+        echo 'Индекс: ' . $adres->Zip->__toString() . '<br>';
+        echo 'Страна: ' . $adres->Country->__toString() . '<br>';
         echo '</p>';
     }
-    foreach ($xml->Items->Item as $item){
+    foreach ($xml->Items->Item as $item) {
         echo '<p>';
-        echo '<b>PartNumber</b>: '. $item->attributes()->PartNumber . '<br>';
-        echo 'Наименование товара: '. $item->ProductName->__toString() . '<br>';
-        echo 'Количество: '. $item->Quantity->__toString() . '<br>';
-        echo 'Цена: '. $item->USPrice->__toString() . '<br>';
-        echo 'Комментарий: '. $item->Comment->__toString() . '<br>';
-        echo 'Дата: '. $item->ShipDate->__toString() . '<br>';
+        echo '<b>PartNumber</b>: ' . $item->attributes()->PartNumber . '<br>';
+        echo 'Наименование товара: ' . $item->ProductName->__toString() . '<br>';
+        echo 'Количество: ' . $item->Quantity->__toString() . '<br>';
+        echo 'Цена: ' . $item->USPrice->__toString() . '<br>';
+        echo 'Комментарий: ' . $item->Comment->__toString() . '<br>';
+        echo 'Дата: ' . $item->ShipDate->__toString() . '<br>';
         echo '</p>';
     }
-    echo '<b>Комментарии к заказу: </b>'. $xml->DeliveryNotes->__toString();
+    echo '<b>Комментарии к заказу: </b>' . $xml->DeliveryNotes->__toString();
+}
+
+function task2()
+{
+    $arr = [
+        0 =>
+            array(
+                0 => "Test1",
+                1 => "1",
+                2 => "NY"
+            ),
+        1 =>
+            array(
+                0 => "Test2",
+                1 => "2",
+                2 => "Tokio"
+            ),
+        2 =>
+            array(
+                0 => "Test3",
+                1 => "3",
+                2 => "Moscow"
+            ),
+    ];
+    $jsonArr = json_encode($arr);
+    file_put_contents('src/output.json',$jsonArr);
+    if (rand(0, 1) == 1) {
+        echo "Меняем файл" . '<br>';
+        $file = file_get_contents('src/output.json');
+        $arr2 = json_decode($file);
+        echo '<pre>';
+        print_r($arr2);
+        $arr2[rand(0,2)][rand(0,2)] = 'Data has been changed';
+        echo '<pre>';
+        print_r($arr2);
+        $changedJson = json_encode($arr2);
+        file_put_contents('src/output2.json',$changedJson);
+        for ($i=0; $i<=2;$i++){
+            for ($j=0; $j<=2;$j++){
+                if($arr[$i][$j] != $arr2[$i][$j]){
+                    echo 'Элемент массива ' . $arr[$i][$j] . ' не равен элементу массива ' . $arr2[$i][$j];
+                }
+            }
+        }
+
+    }else{
+        echo 'Файл не меняли';
+    }
 }
