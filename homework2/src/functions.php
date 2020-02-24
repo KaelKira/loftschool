@@ -1,75 +1,77 @@
 <?php
 function task1($arraOfString, $glue)
 {
-    $result = '';
-    foreach ($arraOfString as $string) {
-        if ($glue == FALSE) {
-            $result .= "<p>" . $string . "</p>";
-        } else {
-            $result .= $string;
+    if ($glue === false) {
+        foreach ($arraOfString as $string) {
+            echo '<p>' . $string . '</p>';
         }
-    }
-    if ($glue == FALSE) {
-        echo $result;
     } else {
-        return $result;
+        return implode($arraOfString);
     }
 }
 
-function task2(string $operator)
+function task2(string $operator, ...$numbers)
 {
     $args = func_get_args();
+    array_shift($args);
     $iMax = count($args);
 
     switch ($operator) {
         case '+':
-            $result = 0;
+            $result = $args[0];
             for ($i = 1; $i < $iMax; $i++) {
                 $result += $args[$i];
             }
+            echo implode($operator, $args);
+            echo '=' . $result;
             break;
         case '-':
-            $result = $args[1];
-            for ($i = 2; $i < $iMax; $i++) {
+            $result = $args[0];
+            for ($i = 1; $i < $iMax; $i++) {
                 $result -= $args[$i];
             }
+            echo implode($operator, $args);
+            echo '=' . $result;
             break;
         case '*':
-            $result = 1;
+            $result = $args[0];
             for ($i = 1; $i < $iMax; $i++) {
                 $result *= $args[$i];
             }
+            echo implode($operator, $args);
+            echo '=' . $result;
             break;
         case '/':
-            $result = $args[1];
-            for ($i = 2; $i < $iMax; $i++) {
+            $result = $args[0];
+            for ($i = 1; $i < $iMax; $i++) {
                 if ($args[$i] == 0) {
-                    $result = 'На ноль делить не стоит. Замените нулевой аргумент';
+                    echo 'На ноль делить не стоит. Замените нулевой аргумент';
                     return $result;
                 }
                 $result /= $args[$i];
             }
+            echo implode($operator, $args);
+            echo '=' . $result;
             break;
         default:
-            $result = 'Не известный оператор';
+            echo 'Не известный оператор';
     }
-    return $result;
 }
 
-function task3($int, $int2)
+function task3($rows, $cols)
 {
-    if (is_int($int) && is_int($int2)) {
+    if (is_int($rows) && is_int($cols)) {
         echo '<table border="1">';
-        for ($i = 1; $i <= $int; $i++) {
+        for ($i = 1; $i <= $rows; $i++) {
             echo '<tr>';
-            for ($j = 1; $j <= $int2; $j++) {
+            for ($j = 1; $j <= $cols; $j++) {
                 $result = $i * $j;
-                echo '<td>'. $result . '</td>';
+                echo '<td>' . $result . '</td>';
             }
             echo '</tr>';
         }
         echo '</table>';
-    }else{
+    } else {
         echo 'Аргументы должны быть целые числа';
     }
 
@@ -85,14 +87,10 @@ function task4()
 function task5()
 {
     $changestr = 'Карл у Клары украл Кораллы';
-    $changed = preg_replace('/К/', '', $changestr);
-    echo $changed . PHP_EOL;
+    echo str_replace('К', '', $changestr) . PHP_EOL;
 
     $str = 'Две бутылки лимонада';
-    $strchng = '/Две/';
-    $strrepl = 'Три';
-    $changed2 = preg_replace($strchng, $strrepl, $str);
-    echo $changed2;
+    echo $changed2 = str_replace('Две', 'Три', $str);
 }
 
 function task6($fileName)
