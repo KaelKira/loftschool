@@ -6,14 +6,14 @@ function task1()
     echo '<b>PurchaseOrderNumber: </b>' . $xml->attributes()->PurchaseOrderNumber . '<br>';
     echo '<b>OrderDate: </b>' . $xml->attributes()->OrderDate;
     echo '<p>' . "Адреса:" . '</p>';
-    foreach ($xml->Address as $adres) {
+    foreach ($xml->Address as $adress) {
         echo '<p>';
-        echo '<b>Type</b>: ' . $adres->attributes()->Type . '<br>';
-        echo 'Улица: ' . $adres->Street->__toString() . '<br>';
-        echo 'Город: ' . $adres->City->__toString() . '<br>';
-        echo 'Штат: ' . $adres->State->__toString() . '<br>';
-        echo 'Индекс: ' . $adres->Zip->__toString() . '<br>';
-        echo 'Страна: ' . $adres->Country->__toString() . '<br>';
+        echo '<b>Type</b>: ' . $adress->attributes()->Type . '<br>';
+        echo 'Улица: ' . $adress->Street->__toString() . '<br>';
+        echo 'Город: ' . $adress->City->__toString() . '<br>';
+        echo 'Штат: ' . $adress->State->__toString() . '<br>';
+        echo 'Индекс: ' . $adress->Zip->__toString() . '<br>';
+        echo 'Страна: ' . $adress->Country->__toString() . '<br>';
         echo '</p>';
     }
     echo '<b>Комментарии к заказу: </b>' . $xml->DeliveryNotes->__toString();
@@ -31,6 +31,7 @@ function task1()
 
 function task2()
 {
+    $flag = true;
     $arr = [
         0 =>
             array(
@@ -53,27 +54,33 @@ function task2()
     ];
     $jsonArr = json_encode($arr);
     file_put_contents('src/output.json', $jsonArr);
+    $file = file_get_contents('src/output.json');
     if (rand(0, 1) == 1) {
-        echo "Меняем файл" . '<br>';
-        $file = file_get_contents('src/output.json');
         $arr2 = json_decode($file);
-        echo '<pre>';
-        print_r($arr2);
         $arr2[rand(0, 2)][rand(0, 2)] = 'Data has been changed';
-        echo '<pre>';
-        print_r($arr2);
         $changedJson = json_encode($arr2);
         file_put_contents('src/output2.json', $changedJson);
-        for ($i = 0; $i <= 2; $i++) {
-            for ($j = 0; $j <= 2; $j++) {
-                if ($arr[$i][$j] != $arr2[$i][$j]) {
-                    echo 'Элемент массива ' . $arr[$i][$j] . ' не равен элементу массива ' . $arr2[$i][$j];
-                }
+    } else {
+        file_put_contents('src/output2.json', $file);
+        echo "HINT Файл НЕЕЕ поменяли";
+    }
+    $file = file_get_contents('src/output2.json');
+    $arr2 = json_decode($file);
+    echo '<pre>';
+    print_r($arr);
+    echo '<pre>';
+    print_r($arr2);
+    for ($i = 0; $i <= 2; $i++) {
+        for ($j = 0; $j <= 2; $j++) {
+            if ($arr[$i][$j] != $arr2[$i][$j]) {
+                echo 'Элемент массива ' . $arr[$i][$j] . ' не равен элементу массива ' . $arr2[$i][$j];
+                $flag = false;
+                break 2;
             }
         }
-
-    } else {
-        echo 'Файл не меняли';
+    }
+    if ($flag) {
+        echo "Все элементы равны";
     }
 }
 
@@ -84,12 +91,14 @@ function task3()
     }
     $newFile = fopen('src/file.csv', 'w');
     fputcsv($newFile, $arr, ';');
+    fclose($newFile);
     $newFile = fopen('src/file.csv', 'r');
-    $newArr = $string = fgetcsv($newFile, 1000 * 1000, ';');
+    $numbers = fgetcsv($newFile, 1000 * 1000, ';');
+    fclose($newFile);
     $sum = 0;
-    foreach ($newArr as $value) {
-        if ($value % 2 == 0) {
-            $sum += $value;
+    foreach ($numbers as $number) {
+        if ($number % 2 == 0) {
+            $sum += $number;
         }
     }
     echo 'Сумма чётных чисел равна = ' . $sum;
