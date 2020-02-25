@@ -62,7 +62,6 @@ function task2()
         file_put_contents('src/output2.json', $changedJson);
     } else {
         file_put_contents('src/output2.json', $file);
-        echo "HINT Файл НЕЕЕ поменяли";
     }
     $file = file_get_contents('src/output2.json');
     $arr2 = json_decode($file);
@@ -123,6 +122,6 @@ function task4()
         return $result;
     }
 
-    echo search_key('pageid', $arr);
-    echo search_key('title', $arr);
+    search_key('pageid', $arr);
+    search_key('title', $arr);
 }
