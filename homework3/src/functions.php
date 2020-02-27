@@ -110,18 +110,17 @@ function task4()
     $arr = json_decode($file, true);
     function search_key($searchKey, array $arr)
     {
-        if (isset($arr[$searchKey])) {
-            echo $arr[$searchKey] . '<br>';
-            $result[] = $arr[$searchKey];
-        }
         foreach ($arr as $key => $param) {
             if (is_array($param)) {
-                search_key($searchKey, $param);
+                $result = search_key($searchKey, $param);
+            } elseif ($key === $searchKey) {
+                $result = $arr[$key];
+                break;
             }
         }
-        return $result;
+        return !empty($result) ? $result : null;
     }
 
-    search_key('pageid', $arr);
-    search_key('title', $arr);
+    echo search_key('pageid', $arr).'<br>';
+    echo search_key('title', $arr);
 }
