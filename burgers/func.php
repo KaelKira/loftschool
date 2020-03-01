@@ -12,7 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $array['comment'] = $_POST['comment'];
     $array['payment'] = $_POST['payment'];
     $array['callback'] = $_POST['callback'];
-    print_r($array);
 }
 
 $host = 'loftschool';
@@ -31,13 +30,13 @@ while ($element = $req->fetch_assoc()) {
     $data[] = $element;
 }
 
-echo "Запрос данных с почтами. Affected rows " . $mysql->affected_rows . '<br>';
+echo "Запрос данных с почтами затронул строк:  " . $mysql->affected_rows . '<br>';
 $needcreate = 1;
 foreach ($data as $user) {
     if ($array['email'] == $user['email']) {
         $needcreate = 0;
         $userID = $user['id'];
-        echo "Пользователь с email " . $user['email'] . " Уже существует в базе. Welcome Back" . '<br>';
+        echo "Пользователь с email " . $user['email'] . " уже существует в базе. Welcome Back" . '<br>';
     }
 }
 //Создаём нового пользователя в базе данных
@@ -64,7 +63,7 @@ $ord = $mysql->query("INSERT INTO ORDERS (`user_id`,`adress`,`comment`,`payment`
 if (!$ord) {
     echo "Запись в таблицу заказов Всё плохо" . $mysql->error . '<br>';
 } else {
-    echo 'Запись в таблицу заказовВсё хорошо' . 'last_insert_id = ' . $mysql->insert_id . '<br>';
+    echo 'Запись в таблицу заказов. Всё хорошо ' . 'last_insert_id = ' . $mysql->insert_id . '<br>';
     $order = $mysql->insert_id;
 }
 $req = $mysql->query("SELECT total_count FROM users WHERE id = '$userID'");
@@ -72,7 +71,6 @@ $req2 = $req->fetch_assoc();
 $totalorder = $req2["total_count"];
 $totalorder++;
 $ord = $mysql->query("UPDATE users SET total_count = '$totalorder' WHERE id = '$userID'");
-echo $totalorder;
 if ($totalorder == 1) {
     $ordertext = 'Спасибо - это ваш первый заказ';
 } else {
