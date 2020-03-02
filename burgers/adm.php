@@ -42,5 +42,3 @@ function adm()
     }
     echo "</table>";
 }
-
-adm();
