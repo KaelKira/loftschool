@@ -138,7 +138,7 @@ class hourlyTarif extends Basis
     {
         if ($this->checkAge() === true) {
             $this->price = $this->price + ($this->km * $this->pricePerKm + $this->round() * $this->pricePerMinet);
-            $this->price = $this->price * $this->multiplaer();
+            $this->price *= $this->multiplaer();
             $str = 'Тариф ' . $this->tarifName . ' (' . $this->km . ' км по ' . $this->pricePerKm . ' руб. плюс ' . $this->round() . ' час. по ' . $this->pricePerMinet . ' руб)';
             $result = ' общая стоимость = ' . $this->price . '<br>';
             if ($this->multiplaer() == 1.1) {
@@ -164,22 +164,85 @@ class hourlyTarif extends Basis
 
     public function round()
     {
-        $time = $this->time;
         $hour = 0;
-        if ($time > 0) {
-            $hour = 1;
-        }
-        $flag = true;
-        while ($flag == true) {
-            if (($time - 60) > 0) {
-                $time = $time - 60;
-                $hour++;
-            } else {
-                $flag = false;
-            }
+        $time = $this->time;
+        $hour = intdiv($time, 60);
+        if ($time % 60 > 0) {
+            $hour++;
         }
         return $hour;
     }
+}
+class DaylyTarif extends Basis
+{
+    use dopDriver;
+    use dopGps;
+
+    public $pricePerKm = 1;
+    public $pricePerDay = 1000;
+    public $tarifName = 'Суточный';
+    public $dopDriver = false;
+    public $dopGps = false;
+
+    public function __construct($dopDriver, $dopGps, $km, $time, $age)
+    {
+        $this->time = $time;
+        $this->km = $km;
+        $this->age = $age;
+        $this->dopDriver = $dopDriver;
+        $this->dopGps = $dopGps;
+
+        if ($dopDriver) {
+            $this->price += $this->addDriverPrice();
+        }
+        if ($dopGps) {
+            $this->price += $this->addGpsPrice($this->time);
+        }
+    }
+
+    public function calculate()
+    {
+        if ($this->checkAge() === true) {
+            $this->price +=  $this->km * $this->pricePerKm + $this->round() * $this->pricePerDay;
+            $this->price *= $this->multiplaer();
+            $str = 'Тариф ' . $this->tarifName . ' (' . $this->km . ' км по ' . $this->pricePerKm . ' руб. плюс ' . $this->round() . ' дня. по ' . $this->pricePerDay . ' руб)';
+            $result = ' общая стоимость = ' . $this->price . '<br>';
+            if ($this->multiplaer() == 1.1) {
+                $strcoefficient = ' умножить на коэффициент молодёжный 1.1 ';
+            } else {
+                $strcoefficient = '';
+            }
+            if ($this->dopDriver) {
+                $strDopDriver = ' плюс 100 руб за дополнительного водителя ';
+            } else {
+                $strDopDriver = '';
+            }
+            if ($this->dopGps) {
+                $strDopGpsr = ' плюс 15 руб в час за GPS ';
+            } else {
+                $strDopGpsr = '';
+            }
+            echo $str . $strcoefficient . $strDopDriver . $strDopGpsr . $result;
+        }else{
+            return;
+        }
+    }
+
+    public function round()
+    {
+        $time = $this->time;
+        $day = 0;
+        if ($time < 30) {
+            $day = 1;
+            return $day;
+        }
+        $days = ceil($this->time/(60*24));
+        if ($this->time % (60*24) < 30) {
+            $days--;
+        }
+        return $days;
+    }
+
 }
 
 class StudentTarif extends Basis

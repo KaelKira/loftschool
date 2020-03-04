@@ -24,3 +24,9 @@ $tarifStud->calculate();
 //Тариф Не валидный возраст
 $tarifStud = new StudentTarif(1, 50, 26);
 $tarifStud->calculate();
+//Тариф Суточный 1 день с округлением 30 минут вниз и GPS
+$tarifDayly = new DaylyTarif(false,true,1,1450,25);
+$tarifDayly->calculate();
+//Тариф Суточный 2 денz с округлением 30 минут вниз и водитель
+$tarifDayly = new DaylyTarif(true,false,1,1500,25);
+$tarifDayly->calculate();
